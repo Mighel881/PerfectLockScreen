@@ -9,6 +9,7 @@ static BOOL doNotWakeWhenFlashlight;
 static BOOL noDragOnMediaPlayer;
 static BOOL noSwipeToUnlockText;
 static BOOL autoRetryFaceID;
+static BOOL roundedCorners;
 
 // ------------------------------ REMOVE CC GRABBER ------------------------------
 
@@ -107,6 +108,20 @@ static BOOL autoRetryFaceID;
 
 %end
 
+%group roundedCornersGroup
+
+	%hook SBCoverSheetPanelBackgroundContainerView
+
+	- (void)layoutSubviews
+	{
+		[self.layer setMasksToBounds: YES];
+		[self _setCornerRadius: [[[self window] screen] _displayCornerRadius]];
+	}
+
+	%end
+
+%end
+
 %ctor
 {
 	@autoreleasepool
@@ -118,7 +133,8 @@ static BOOL autoRetryFaceID;
 			@"doNotWakeWhenFlashlight": @NO,
 			@"noDragOnMediaPlayer": @NO,
 			@"noSwipeToUnlockText": @NO,
-			@"autoRetryFaceID": @NO
+			@"autoRetryFaceID": @NO,
+			@"roundedCorners": @NO
     	}];
 
 		removeCCGrabber = [pref boolForKey: @"removeCCGrabber"];
@@ -126,11 +142,13 @@ static BOOL autoRetryFaceID;
 		noDragOnMediaPlayer = [pref boolForKey: @"noDragOnMediaPlayer"];
 		noSwipeToUnlockText = [pref boolForKey: @"noSwipeToUnlockText"];
 		autoRetryFaceID = [pref boolForKey: @"autoRetryFaceID"];
+		roundedCorners = [pref boolForKey: @"roundedCorners"];
 
 		if(removeCCGrabber) %init(removeCCGrabberGroup);
 		if(doNotWakeWhenFlashlight) %init(doNotWakeWhenFlashlightGroup);
 		if(noDragOnMediaPlayer) %init(noDragOnMediaPlayerGroup);
 		if(noSwipeToUnlockText) %init(noSwipeToUnlockTextGroup);
-		if(!IS_iPAD && autoRetryFaceID) %init(autoRetryFaceIDGroup);
+		if(autoRetryFaceID) %init(autoRetryFaceIDGroup);
+		if(roundedCorners) %init(roundedCornersGroup);
 	}
 }

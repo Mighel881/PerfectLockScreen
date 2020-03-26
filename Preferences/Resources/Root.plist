@@ -17,6 +17,8 @@
 			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>SETTINGS</string>
+			<key>footerText</key>
+			<string>Round Corners Has An Effect On Rounded Screens</string>
         </dict>
 		<dict>
 			<key>cell</key>
@@ -77,6 +79,18 @@
 			<string>noSwipeToUnlockText</string>
 			<key>label</key>
 			<string>Hide 'Swipe Up' Text</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>roundedCorners</string>
+			<key>label</key>
+			<string>Make Corners Round</string>
 		</dict>
 		<dict>
         	<key>cell</key>
