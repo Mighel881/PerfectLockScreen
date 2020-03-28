@@ -18,7 +18,7 @@
 			<key>label</key>
 			<string>SETTINGS</string>
 			<key>footerText</key>
-			<string>Round Corners Has An Effect On Rounded Screens</string>
+			<string>Round Corners Has An Effect Only On Rounded Screens</string>
         </dict>
 		<dict>
 			<key>cell</key>
@@ -91,6 +91,114 @@
 			<string>roundedCorners</string>
 			<key>label</key>
 			<string>Make Corners Round</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>quickActionsTransparentBackground</string>
+			<key>label</key>
+			<string>Hide Quick Actions BG</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>enableAutoRotate</string>
+			<key>label</key>
+			<string>Enable Auto Rotate</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>HideBatteryChargingAnimation</string>
+			<key>label</key>
+			<string>No Battery Charging Anim.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>hideTodayView</string>
+			<key>label</key>
+			<string>Hide Today View</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>hideDate</string>
+			<key>label</key>
+			<string>Hide Date</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>disableCamera</string>
+			<key>label</key>
+			<string>Disable Camera</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>idleTimerDuration</string>
+			<key>label</key>
+			<string>Custom Idle Duration</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<integer>3</integer>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>idleDuration</string>
+			<key>validTitles</key>
+			<array>
+      			<string>10 Sec</string>
+      			<string>20 Sec</string>
+      			<string>30 Sec</string>
+			</array>
+      		<key>validValues</key>
+			<array>
+      			<string>3</string>
+      			<string>5</string>
+      			<string>7</string>
+			</array>
+			<key>label</key>
+			<string>Idle Duration</string>
 		</dict>
 		<dict>
         	<key>cell</key>

@@ -10,6 +10,14 @@ static BOOL noDragOnMediaPlayer;
 static BOOL noSwipeToUnlockText;
 static BOOL autoRetryFaceID;
 static BOOL roundedCorners;
+static BOOL quickActionsTransparentBackground;
+static BOOL enableAutoRotate;
+static BOOL HideBatteryChargingAnimation;
+static BOOL hideTodayView;
+static BOOL idleTimerDuration;
+static long idleDuration;
+static BOOL hideDate;
+static BOOL disableCamera;
 
 // ------------------------------ REMOVE CC GRABBER ------------------------------
 
@@ -108,6 +116,8 @@ static BOOL roundedCorners;
 
 %end
 
+// ------------------------------ ROUNDED CORNERS ------------------------------
+
 %group roundedCornersGroup
 
 	%hook SBCoverSheetPanelBackgroundContainerView
@@ -116,6 +126,111 @@ static BOOL roundedCorners;
 	{
 		[self.layer setMasksToBounds: YES];
 		[self _setCornerRadius: [[[self window] screen] _displayCornerRadius]];
+	}
+
+	%end
+
+%end
+
+// ------------------------------ QUICK ACTIONS TRANSPARENT BACKGROUND ------------------------------
+
+%group quickActionsTransparentBackgroundGroup
+
+	%hook UIVisualEffectView
+
+	- (void)setBackgroundEffects: (id)arg
+	{
+
+	}
+
+	%end
+
+%end
+
+// ------------------------------ AUTO ROTATE ------------------------------
+
+%group enableAutoRotateGroup
+
+	%hook CSCoverSheetViewController
+
+	- (BOOL)shouldAutorotate
+	{
+		return enableAutoRotate;
+	}
+
+	%end
+
+%end
+
+// ------------------------------ HIDE BATTERY CHARGING ANIMATION ------------------------------
+
+%group HideBatteryChargingAnimationGroup
+
+	%hook CSCoverSheetViewController
+
+	-(void)_transitionChargingViewToVisible:(BOOL)arg1 showBattery:(BOOL)arg2 animated:(BOOL)arg3
+	{
+		%orig(NO, arg2, arg3);
+	}
+
+	%end
+
+%end
+
+// ------------------------------ HIDE TODAY VIEW ------------------------------
+
+%group hideTodayViewGroup
+
+	%hook SBMainDisplayPolicyAggregator
+
+	-(BOOL)_allowsCapabilityLockScreenTodayViewWithExplanation:(id*)arg1
+	{
+		return NO;
+	}
+
+	%end
+
+%end
+
+// ------------------------------ CUSTOM IDLE TIMER DURATION ------------------------------
+
+%group idleTimerDurationGroup
+
+	%hook CSBehavior
+
+	- (void)setIdleTimerDuration: (long long)arg
+	{
+		%orig(idleDuration);
+	}
+
+	%end
+
+%end
+
+// ------------------------------ HIDE DATE ------------------------------
+
+%group hideDateGroup
+
+	%hook SBFLockScreenDateView
+
+	- (void)setContentAlpha: (double)arg1 withSubtitleVisible: (BOOL)arg2
+	{
+		%orig(1, NO);
+	}
+
+	%end
+
+%end
+
+// ------------------------------ DISABLE CAMERA ------------------------------
+
+%group disableCameraGroup
+
+	%hook SBMainDisplayPolicyAggregator
+
+	-(BOOL)_allowsCapabilityLockScreenCameraSupportedWithExplanation:(id*)arg1
+	{
+		return NO;
 	}
 
 	%end
@@ -134,7 +249,15 @@ static BOOL roundedCorners;
 			@"noDragOnMediaPlayer": @NO,
 			@"noSwipeToUnlockText": @NO,
 			@"autoRetryFaceID": @NO,
-			@"roundedCorners": @NO
+			@"roundedCorners": @NO,
+			@"quickActionsTransparentBackground": @NO,
+			@"enableAutoRotate": @NO,
+			@"HideBatteryChargingAnimation": @NO,
+			@"hideTodayView": @NO,
+			@"idleTimerDuration": @NO,
+			@"idleDuration": @3,
+			@"hideDate": @NO,
+			@"disableCamera": @NO
     	}];
 
 		removeCCGrabber = [pref boolForKey: @"removeCCGrabber"];
@@ -143,6 +266,14 @@ static BOOL roundedCorners;
 		noSwipeToUnlockText = [pref boolForKey: @"noSwipeToUnlockText"];
 		autoRetryFaceID = [pref boolForKey: @"autoRetryFaceID"];
 		roundedCorners = [pref boolForKey: @"roundedCorners"];
+		quickActionsTransparentBackground = [pref boolForKey: @"quickActionsTransparentBackground"];
+		enableAutoRotate = [pref boolForKey: @"enableAutoRotate"];
+		HideBatteryChargingAnimation = [pref boolForKey: @"HideBatteryChargingAnimation"];
+		hideTodayView = [pref boolForKey: @"hideTodayView"];
+		idleTimerDuration = [pref boolForKey: @"idleTimerDuration"];
+		idleDuration = [pref integerForKey: @"idleDuration"];
+		hideDate = [pref boolForKey: @"hideDate"];
+		disableCamera = [pref boolForKey: @"disableCamera"];
 
 		if(removeCCGrabber) %init(removeCCGrabberGroup);
 		if(doNotWakeWhenFlashlight) %init(doNotWakeWhenFlashlightGroup);
@@ -150,5 +281,12 @@ static BOOL roundedCorners;
 		if(noSwipeToUnlockText) %init(noSwipeToUnlockTextGroup);
 		if(autoRetryFaceID) %init(autoRetryFaceIDGroup);
 		if(roundedCorners) %init(roundedCornersGroup);
+		if(quickActionsTransparentBackground) %init(quickActionsTransparentBackgroundGroup);
+		%init(enableAutoRotateGroup);
+		if(HideBatteryChargingAnimation) %init(HideBatteryChargingAnimationGroup);
+		if(hideTodayView) %init(hideTodayViewGroup);
+		if(idleTimerDuration) %init(idleTimerDurationGroup);
+		if(hideDate) %init(hideDateGroup);
+		if(disableCamera) %init(disableCameraGroup);
 	}
 }
