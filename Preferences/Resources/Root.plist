@@ -16,10 +16,24 @@
         	<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>SETTINGS</string>
+			<string>GENERAL</string>
 			<key>footerText</key>
-			<string>Round Corners Has An Effect Only On Rounded Screens</string>
+			<string>If 'Not Wake Screen On Flashlight' Is Enabled And Flashlight Is On, You Can Wake The Display Only By Pressing The Power Button.
+
+Round Corners Has An Effect Only On Rounded Screens.</string>
         </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>enableAutoRotate</string>
+			<key>label</key>
+			<string>Enable Auto Rotate</string>
+		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
@@ -40,33 +54,9 @@
 			<key>defaults</key>
 			<string>com.johnzaro.perfectlockscreen13prefs</string>
 			<key>key</key>
-			<string>autoRetryFaceID</string>
-			<key>label</key>
-			<string>Auto Retry Face ID</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.johnzaro.perfectlockscreen13prefs</string>
-			<key>key</key>
 			<string>doNotWakeWhenFlashlight</string>
 			<key>label</key>
 			<string>Not Wake Screen On Flashlight</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.johnzaro.perfectlockscreen13prefs</string>
-			<key>key</key>
-			<string>noDragOnMediaPlayer</string>
-			<key>label</key>
-			<string>Disable Drag On Media Player</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -100,34 +90,52 @@
 			<key>defaults</key>
 			<string>com.johnzaro.perfectlockscreen13prefs</string>
 			<key>key</key>
-			<string>quickActionsTransparentBackground</string>
-			<key>label</key>
-			<string>Hide Quick Actions BG</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.johnzaro.perfectlockscreen13prefs</string>
-			<key>key</key>
-			<string>enableAutoRotate</string>
-			<key>label</key>
-			<string>Enable Auto Rotate</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-			<key>default</key>
-			<false/>
-			<key>defaults</key>
-			<string>com.johnzaro.perfectlockscreen13prefs</string>
-			<key>key</key>
 			<string>HideBatteryChargingAnimation</string>
 			<key>label</key>
 			<string>No Battery Charging Anim.</string>
 		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>FACE ID</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>autoRetryFaceID</string>
+			<key>label</key>
+			<string>Auto Retry Face ID</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>MEDIA PLAYER</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>noDragOnMediaPlayer</string>
+			<key>label</key>
+			<string>Disable Drag On Media Player</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>WIDGETS PAGE</string>
+        </dict>
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
@@ -138,8 +146,14 @@
 			<key>key</key>
 			<string>hideTodayView</string>
 			<key>label</key>
-			<string>Hide Today View</string>
+			<string>Hide Widgets Page</string>
 		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>TIME AND DATE</string>
+        </dict>
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
@@ -153,6 +167,12 @@
 			<string>Hide Date</string>
 		</dict>
 		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>CAMERA PAGE</string>
+        </dict>
+		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
@@ -162,7 +182,25 @@
 			<key>key</key>
 			<string>disableCamera</string>
 			<key>label</key>
-			<string>Disable Camera</string>
+			<string>Disable Camera Page</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>QUICK ACTION BUTTONS</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>quickActionsTransparentBackground</string>
+			<key>label</key>
+			<string>Hide Quick Actions BG</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -172,33 +210,21 @@
 			<key>defaults</key>
 			<string>com.johnzaro.perfectlockscreen13prefs</string>
 			<key>key</key>
-			<string>idleTimerDuration</string>
+			<string>hideFlashlightButton</string>
 			<key>label</key>
-			<string>Custom Idle Duration</string>
+			<string>Hide Flashlight Button</string>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSSegmentCell</string>
+			<string>PSSwitchCell</string>
 			<key>default</key>
-			<integer>3</integer>
+			<false/>
 			<key>defaults</key>
 			<string>com.johnzaro.perfectlockscreen13prefs</string>
 			<key>key</key>
-			<string>idleDuration</string>
-			<key>validTitles</key>
-			<array>
-      			<string>10 Sec</string>
-      			<string>20 Sec</string>
-      			<string>30 Sec</string>
-			</array>
-      		<key>validValues</key>
-			<array>
-      			<string>3</string>
-      			<string>5</string>
-      			<string>7</string>
-			</array>
+			<string>hideCameraButton</string>
 			<key>label</key>
-			<string>Idle Duration</string>
+			<string>Hide Camera Button</string>
 		</dict>
 		<dict>
         	<key>cell</key>

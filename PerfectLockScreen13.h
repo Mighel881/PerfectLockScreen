@@ -19,3 +19,11 @@
 @interface UIScreen ()
 - (double)_displayCornerRadius;
 @end
+
+@interface UICoverSheetButton : UIControl
+- (NSString *)localizedAccessoryTitle;
+@end
+
+@interface CSQuickActionsButton: UIControl
+- (long long)type;
+@end

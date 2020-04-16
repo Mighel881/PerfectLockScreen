@@ -12,12 +12,12 @@ static BOOL autoRetryFaceID;
 static BOOL roundedCorners;
 static BOOL quickActionsTransparentBackground;
 static BOOL enableAutoRotate;
-static BOOL HideBatteryChargingAnimation;
+static BOOL hideBatteryChargingAnimation;
 static BOOL hideTodayView;
-static BOOL idleTimerDuration;
-static long idleDuration;
 static BOOL hideDate;
 static BOOL disableCamera;
+static BOOL hideFlashlightButton;
+static BOOL hideCameraButton;
 
 // ------------------------------ REMOVE CC GRABBER ------------------------------
 
@@ -25,7 +25,7 @@ static BOOL disableCamera;
 
 	%hook CSTeachableMomentsContainerView
 
-	-(void)_layoutControlCenterGrabberAndGlyph
+	- (void)_layoutControlCenterGrabberAndGlyph
 	{
 
 	}
@@ -101,7 +101,7 @@ static BOOL disableCamera;
 
 	%hook SBDashBoardPearlUnlockBehavior
 
-	-(void)_handlePearlFailure
+	- (void)_handlePearlFailure
 	{
 		%orig;
 		
@@ -164,11 +164,11 @@ static BOOL disableCamera;
 
 // ------------------------------ HIDE BATTERY CHARGING ANIMATION ------------------------------
 
-%group HideBatteryChargingAnimationGroup
+%group hideBatteryChargingAnimationGroup
 
 	%hook CSCoverSheetViewController
 
-	-(void)_transitionChargingViewToVisible:(BOOL)arg1 showBattery:(BOOL)arg2 animated:(BOOL)arg3
+	- (void)_transitionChargingViewToVisible: (BOOL)arg1 showBattery: (BOOL)arg2 animated: (BOOL)arg3
 	{
 		%orig(NO, arg2, arg3);
 	}
@@ -183,24 +183,9 @@ static BOOL disableCamera;
 
 	%hook SBMainDisplayPolicyAggregator
 
-	-(BOOL)_allowsCapabilityLockScreenTodayViewWithExplanation:(id*)arg1
+	- (BOOL)_allowsCapabilityLockScreenTodayViewWithExplanation: (id*)arg1
 	{
 		return NO;
-	}
-
-	%end
-
-%end
-
-// ------------------------------ CUSTOM IDLE TIMER DURATION ------------------------------
-
-%group idleTimerDurationGroup
-
-	%hook CSBehavior
-
-	- (void)setIdleTimerDuration: (long long)arg
-	{
-		%orig(idleDuration);
 	}
 
 	%end
@@ -228,9 +213,27 @@ static BOOL disableCamera;
 
 	%hook SBMainDisplayPolicyAggregator
 
-	-(BOOL)_allowsCapabilityLockScreenCameraSupportedWithExplanation:(id*)arg1
+	- (BOOL)_allowsCapabilityLockScreenCameraWithExplanation: (id*)arg1
 	{
 		return NO;
+	}
+
+	%end
+
+%end
+
+// ------------------------- HIDE QUICK ACTION BUTTONS -------------------------
+
+%group hideQuickActionButtonsGroup
+
+	%hook CSQuickActionsButton
+
+	- (void)didMoveToWindow
+	{
+		%orig;
+
+		if([self type] == 0 && hideCameraButton) [self setHidden: YES];
+		if([self type] == 1 && hideFlashlightButton) [self setHidden: YES];
 	}
 
 	%end
@@ -252,14 +255,14 @@ static BOOL disableCamera;
 			@"roundedCorners": @NO,
 			@"quickActionsTransparentBackground": @NO,
 			@"enableAutoRotate": @NO,
-			@"HideBatteryChargingAnimation": @NO,
+			@"hideBatteryChargingAnimation": @NO,
 			@"hideTodayView": @NO,
-			@"idleTimerDuration": @NO,
-			@"idleDuration": @3,
 			@"hideDate": @NO,
-			@"disableCamera": @NO
+			@"disableCamera": @NO,
+			@"hideFlashlightButton": @NO,
+			@"hideCameraButton": @NO
     	}];
-
+		
 		removeCCGrabber = [pref boolForKey: @"removeCCGrabber"];
 		doNotWakeWhenFlashlight = [pref boolForKey: @"doNotWakeWhenFlashlight"];
 		noDragOnMediaPlayer = [pref boolForKey: @"noDragOnMediaPlayer"];
@@ -268,12 +271,12 @@ static BOOL disableCamera;
 		roundedCorners = [pref boolForKey: @"roundedCorners"];
 		quickActionsTransparentBackground = [pref boolForKey: @"quickActionsTransparentBackground"];
 		enableAutoRotate = [pref boolForKey: @"enableAutoRotate"];
-		HideBatteryChargingAnimation = [pref boolForKey: @"HideBatteryChargingAnimation"];
+		hideBatteryChargingAnimation = [pref boolForKey: @"hideBatteryChargingAnimation"];
 		hideTodayView = [pref boolForKey: @"hideTodayView"];
-		idleTimerDuration = [pref boolForKey: @"idleTimerDuration"];
-		idleDuration = [pref integerForKey: @"idleDuration"];
 		hideDate = [pref boolForKey: @"hideDate"];
 		disableCamera = [pref boolForKey: @"disableCamera"];
+		hideFlashlightButton = [pref boolForKey: @"hideFlashlightButton"];
+		hideCameraButton = [pref boolForKey: @"hideCameraButton"];
 
 		if(removeCCGrabber) %init(removeCCGrabberGroup);
 		if(doNotWakeWhenFlashlight) %init(doNotWakeWhenFlashlightGroup);
@@ -283,10 +286,10 @@ static BOOL disableCamera;
 		if(roundedCorners) %init(roundedCornersGroup);
 		if(quickActionsTransparentBackground) %init(quickActionsTransparentBackgroundGroup);
 		%init(enableAutoRotateGroup);
-		if(HideBatteryChargingAnimation) %init(HideBatteryChargingAnimationGroup);
+		if(hideBatteryChargingAnimation) %init(hideBatteryChargingAnimationGroup);
 		if(hideTodayView) %init(hideTodayViewGroup);
-		if(idleTimerDuration) %init(idleTimerDurationGroup);
 		if(hideDate) %init(hideDateGroup);
 		if(disableCamera) %init(disableCameraGroup);
+		if(hideFlashlightButton || hideCameraButton) %init(hideQuickActionButtonsGroup);
 	}
 }
