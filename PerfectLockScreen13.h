@@ -20,10 +20,18 @@
 - (double)_displayCornerRadius;
 @end
 
-@interface UICoverSheetButton : UIControl
-- (NSString *)localizedAccessoryTitle;
+@interface UICoverSheetButton: UIControl
+- (NSString*)localizedAccessoryTitle;
 @end
 
 @interface CSQuickActionsButton: UIControl
 - (long long)type;
+@end
+
+@interface SBFLockScreenDateView: UIView
+@property(nonatomic, retain) UIImageView *dndImageView;
+@property(nonatomic, retain) UIImageView *silentImageView;
+- (id)initWithFrame: (CGRect)arg1;
+- (void)layoutSubviews;
+- (void)updateIndicatorImageView;
 @end

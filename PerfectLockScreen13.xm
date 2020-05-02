@@ -1,9 +1,18 @@
 #import "PerfectLockScreen13.h"
 #import <Cephei/HBPreferences.h>
+#import "SparkColourPickerUtils.h"
 
+#define kBundlePath @"/var/mobile/Library/com.johnzaro.perfectlockscreen13.bundle"
 #define IS_iPAD ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
+static SBFLockScreenDateView *lockScreenDateView;
+
+static NSBundle *bundle;
+static BOOL isDNDActive;
+static BOOL isRingerSilent;
+
 static HBPreferences *pref;
+static BOOL enabled;
 static BOOL removeCCGrabber;
 static BOOL doNotWakeWhenFlashlight;
 static BOOL noDragOnMediaPlayer;
@@ -18,6 +27,20 @@ static BOOL hideDate;
 static BOOL disableCamera;
 static BOOL hideFlashlightButton;
 static BOOL hideCameraButton;
+
+static BOOL showDNDIndicator;
+static BOOL enableDNDTintColor;
+static UIColor *dndTintColor;
+static BOOL enableDNDGlow;
+static UIColor *dndGlowColor;
+static BOOL showSilentIndicator;
+static BOOL enableSilentTintColor;
+static UIColor *silentTintColor;
+static BOOL enableSilentGlow;
+static UIColor *silentGlowColor;
+static double statusIndicatorLocationX;
+static double statusIndicatorLocationY;
+static long statusIndicatorSize;
 
 // ------------------------------ REMOVE CC GRABBER ------------------------------
 
@@ -240,6 +263,108 @@ static BOOL hideCameraButton;
 
 %end
 
+%group showIndicatorGroup
+
+	%hook DNDState
+
+	- (BOOL)isActive
+	{
+		isDNDActive = %orig;
+		return isDNDActive;
+	}
+	
+	- (void)setActive: (BOOL)arg1
+	{
+		%orig;
+
+		isDNDActive = arg1;
+		[lockScreenDateView updateIndicatorImageView];
+	}
+
+	%end
+
+	%hook SBRingerControl
+
+	- (void)setRingerMuted: (BOOL)arg1
+	{
+		%orig;
+
+		isRingerSilent = arg1;
+		[lockScreenDateView updateIndicatorImageView];
+	}
+
+	%end
+
+	%hook SBFLockScreenDateView
+
+	%property(nonatomic, retain) UIImageView *dndImageView;
+	%property(nonatomic, retain) UIImageView *silentImageView;
+
+	- (id)initWithFrame: (CGRect)arg1
+	{
+		lockScreenDateView = %orig;
+
+		if(showDNDIndicator)
+		{
+			[self setDndImageView: [[UIImageView alloc] initWithFrame: CGRectMake(statusIndicatorLocationX, statusIndicatorLocationY, statusIndicatorSize, statusIndicatorSize)]];
+			[[self dndImageView] setImage: [[UIImage imageNamed: @"dnd" inBundle: bundle compatibleWithTraitCollection: nil] imageWithRenderingMode: UIImageRenderingModeAlwaysTemplate]];
+			[[self dndImageView] setContentMode: UIViewContentModeScaleAspectFit];
+			
+			if(enableDNDTintColor)
+				[[self dndImageView] setTintColor: dndTintColor];
+			if(enableDNDGlow)
+			{
+				[[[self dndImageView] layer] setShadowOffset: CGSizeZero];
+				[[[self dndImageView] layer] setShadowColor: dndGlowColor.CGColor];
+				[[[self dndImageView] layer] setShadowRadius: statusIndicatorSize / 10];
+				[[[self dndImageView] layer] setShadowOpacity: 1.0];
+			}
+		}	
+		if(showSilentIndicator)
+		{
+			[self setSilentImageView: [[UIImageView alloc] initWithFrame: CGRectMake(statusIndicatorLocationX, statusIndicatorLocationY, statusIndicatorSize, statusIndicatorSize)]];
+			[[self silentImageView] setImage: [[UIImage imageNamed: @"vibration" inBundle: bundle compatibleWithTraitCollection: nil] imageWithRenderingMode: UIImageRenderingModeAlwaysTemplate]];
+			[[self silentImageView] setContentMode: UIViewContentModeScaleAspectFit];
+			
+			if(enableSilentTintColor)
+				[[self silentImageView] setTintColor: silentTintColor];
+			if(enableSilentGlow)
+			{
+				[[[self silentImageView] layer] setShadowOffset: CGSizeZero];
+				[[[self silentImageView] layer] setShadowColor: silentGlowColor.CGColor];
+				[[[self silentImageView] layer] setShadowRadius: statusIndicatorSize / 10];
+				[[[self silentImageView] layer] setShadowOpacity: 1.0];
+			}
+		}	
+
+		return lockScreenDateView;
+	}
+
+	- (void)layoutSubviews
+	{
+		%orig;
+
+		[self updateIndicatorImageView];
+	}
+
+	%new
+	- (void)updateIndicatorImageView
+	{
+		if([self dndImageView])
+			[[self dndImageView] removeFromSuperview];
+		if([self silentImageView])
+			[[self silentImageView] removeFromSuperview];
+
+		if(isDNDActive && showDNDIndicator)
+			[self addSubview: [self dndImageView]];
+		else if(isRingerSilent && showSilentIndicator)
+			[self addSubview: [self silentImageView]];
+	}
+
+	%end
+
+%end
+
 %ctor
 {
 	@autoreleasepool
@@ -247,6 +372,7 @@ static BOOL hideCameraButton;
 		pref = [[HBPreferences alloc] initWithIdentifier: @"com.johnzaro.perfectlockscreen13prefs"];
 		[pref registerDefaults:
 		@{
+			@"enabled": @NO,
 			@"removeCCGrabber": @NO,
 			@"doNotWakeWhenFlashlight": @NO,
 			@"noDragOnMediaPlayer": @NO,
@@ -260,36 +386,78 @@ static BOOL hideCameraButton;
 			@"hideDate": @NO,
 			@"disableCamera": @NO,
 			@"hideFlashlightButton": @NO,
-			@"hideCameraButton": @NO
+			@"hideCameraButton": @NO,
+
+			@"showDNDIndicator": @NO,
+			@"enableDNDTintColor": @NO,
+			@"enableDNDGlow": @NO,
+			@"showSilentIndicator": @NO,
+			@"enableSilentTintColor": @NO,
+			@"enableSilentGlow": @NO,
+			@"statusIndicatorLocationX": @285,
+			@"statusIndicatorLocationY": @30,
+			@"statusIndicatorSize": @40
     	}];
 		
-		removeCCGrabber = [pref boolForKey: @"removeCCGrabber"];
-		doNotWakeWhenFlashlight = [pref boolForKey: @"doNotWakeWhenFlashlight"];
-		noDragOnMediaPlayer = [pref boolForKey: @"noDragOnMediaPlayer"];
-		noSwipeToUnlockText = [pref boolForKey: @"noSwipeToUnlockText"];
-		autoRetryFaceID = [pref boolForKey: @"autoRetryFaceID"];
-		roundedCorners = [pref boolForKey: @"roundedCorners"];
-		quickActionsTransparentBackground = [pref boolForKey: @"quickActionsTransparentBackground"];
-		enableAutoRotate = [pref boolForKey: @"enableAutoRotate"];
-		hideBatteryChargingAnimation = [pref boolForKey: @"hideBatteryChargingAnimation"];
-		hideTodayView = [pref boolForKey: @"hideTodayView"];
-		hideDate = [pref boolForKey: @"hideDate"];
-		disableCamera = [pref boolForKey: @"disableCamera"];
-		hideFlashlightButton = [pref boolForKey: @"hideFlashlightButton"];
-		hideCameraButton = [pref boolForKey: @"hideCameraButton"];
+		enabled = [pref boolForKey: @"enabled"];
+		if(enabled)
+		{
+			removeCCGrabber = [pref boolForKey: @"removeCCGrabber"];
+			doNotWakeWhenFlashlight = [pref boolForKey: @"doNotWakeWhenFlashlight"];
+			noDragOnMediaPlayer = [pref boolForKey: @"noDragOnMediaPlayer"];
+			noSwipeToUnlockText = [pref boolForKey: @"noSwipeToUnlockText"];
+			autoRetryFaceID = [pref boolForKey: @"autoRetryFaceID"];
+			roundedCorners = [pref boolForKey: @"roundedCorners"];
+			quickActionsTransparentBackground = [pref boolForKey: @"quickActionsTransparentBackground"];
+			enableAutoRotate = [pref boolForKey: @"enableAutoRotate"];
+			hideBatteryChargingAnimation = [pref boolForKey: @"hideBatteryChargingAnimation"];
+			hideTodayView = [pref boolForKey: @"hideTodayView"];
+			hideDate = [pref boolForKey: @"hideDate"];
+			disableCamera = [pref boolForKey: @"disableCamera"];
+			hideFlashlightButton = [pref boolForKey: @"hideFlashlightButton"];
+			hideCameraButton = [pref boolForKey: @"hideCameraButton"];
 
-		if(removeCCGrabber) %init(removeCCGrabberGroup);
-		if(doNotWakeWhenFlashlight) %init(doNotWakeWhenFlashlightGroup);
-		if(noDragOnMediaPlayer) %init(noDragOnMediaPlayerGroup);
-		if(noSwipeToUnlockText) %init(noSwipeToUnlockTextGroup);
-		if(autoRetryFaceID) %init(autoRetryFaceIDGroup);
-		if(roundedCorners) %init(roundedCornersGroup);
-		if(quickActionsTransparentBackground) %init(quickActionsTransparentBackgroundGroup);
-		%init(enableAutoRotateGroup);
-		if(hideBatteryChargingAnimation) %init(hideBatteryChargingAnimationGroup);
-		if(hideTodayView) %init(hideTodayViewGroup);
-		if(hideDate) %init(hideDateGroup);
-		if(disableCamera) %init(disableCameraGroup);
-		if(hideFlashlightButton || hideCameraButton) %init(hideQuickActionButtonsGroup);
+			showDNDIndicator = [pref boolForKey: @"showDNDIndicator"];
+			showSilentIndicator = [pref boolForKey: @"showSilentIndicator"];
+			if(showDNDIndicator || showSilentIndicator)
+			{
+				bundle = [[NSBundle alloc] initWithPath: kBundlePath];
+
+				statusIndicatorLocationX = [pref floatForKey: @"statusIndicatorLocationX"];
+				statusIndicatorLocationY = [pref floatForKey: @"statusIndicatorLocationY"];
+				statusIndicatorSize = [pref integerForKey: @"statusIndicatorSize"];
+
+				enableDNDGlow = [pref boolForKey: @"enableDNDGlow"];
+				enableSilentGlow = [pref boolForKey: @"enableSilentGlow"];
+				enableDNDTintColor = [pref boolForKey: @"enableDNDTintColor"];
+				enableSilentTintColor = [pref boolForKey: @"enableSilentTintColor"];
+
+				if(showDNDIndicator && (enableDNDTintColor || enableDNDGlow) || showSilentIndicator && (enableSilentTintColor || enableSilentGlow))
+				{
+					NSDictionary *preferencesDictionary = [NSDictionary dictionaryWithContentsOfFile: @"/var/mobile/Library/Preferences/com.johnzaro.perfectlockscreen13prefs.colors.plist"];
+
+					dndTintColor = [SparkColourPickerUtils colourWithString: [preferencesDictionary objectForKey: @"dndTintColor"] withFallback: @"#9b59b6"];
+					dndGlowColor = [SparkColourPickerUtils colourWithString: [preferencesDictionary objectForKey: @"dndGlowColor"] withFallback: @"#9b59b6"];
+					silentTintColor = [SparkColourPickerUtils colourWithString: [preferencesDictionary objectForKey: @"silentTintColor"] withFallback: @"#ffffff"];
+					silentGlowColor = [SparkColourPickerUtils colourWithString: [preferencesDictionary objectForKey: @"silentGlowColor"] withFallback: @"#ffffff"];
+				}
+
+				%init(showIndicatorGroup);
+			}
+
+			if(removeCCGrabber) %init(removeCCGrabberGroup);
+			if(doNotWakeWhenFlashlight) %init(doNotWakeWhenFlashlightGroup);
+			if(noDragOnMediaPlayer) %init(noDragOnMediaPlayerGroup);
+			if(noSwipeToUnlockText) %init(noSwipeToUnlockTextGroup);
+			if(autoRetryFaceID) %init(autoRetryFaceIDGroup);
+			if(roundedCorners) %init(roundedCornersGroup);
+			if(quickActionsTransparentBackground) %init(quickActionsTransparentBackgroundGroup);
+			%init(enableAutoRotateGroup);
+			if(hideBatteryChargingAnimation) %init(hideBatteryChargingAnimationGroup);
+			if(hideTodayView) %init(hideTodayViewGroup);
+			if(hideDate) %init(hideDateGroup);
+			if(disableCamera) %init(disableCameraGroup);
+			if(hideFlashlightButton || hideCameraButton) %init(hideQuickActionButtonsGroup);
+		}
 	}
 }

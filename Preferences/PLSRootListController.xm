@@ -1,5 +1,4 @@
 #include "PLSRootListController.h"
-#import "SparkAppListTableViewController.h"
 #import "SparkColourPickerView.h"
 #import "spawn.h"
 
@@ -88,6 +87,7 @@
 
             NSFileManager *manager = [NSFileManager defaultManager];
             [manager removeItemAtPath:@"/var/mobile/Library/Preferences/com.johnzaro.perfectlockscreen13prefs.plist" error: nil];
+            [manager removeItemAtPath:@"/var/mobile/Library/Preferences/com.johnzaro.perfectlockscreen13prefs.colors.plist" error: nil];
 
             [self respring];
         }];

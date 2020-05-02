@@ -15,6 +15,22 @@
 		<dict>
         	<key>cell</key>
 			<string>PSGroupCell</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>enabled</string>
+			<key>label</key>
+			<string>Enabled</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>GENERAL</string>
 			<key>footerText</key>
@@ -225,6 +241,242 @@ Round Corners Has An Effect Only On Rounded Screens.</string>
 			<string>hideCameraButton</string>
 			<key>label</key>
 			<string>Hide Camera Button</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>--- DND - SILENT MODE INDICATOR ---</string>
+			<key>alignment</key>
+			<integer>1</integer>
+        </dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>DND INDICATOR</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>showDNDIndicator</string>
+			<key>label</key>
+			<string>Show DND Indicator</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>enableDNDTintColor</string>
+			<key>label</key>
+			<string>Add Tint</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>SparkColourPickerCell</string>
+			<key>libsparkcolourpicker</key>
+			<dict>
+				<key>defaults</key>
+				<string>com.johnzaro.perfectlockscreen13prefs.colors</string>
+				<key>key</key>
+				<string>dndTintColor</string>
+				<key>fallback</key>
+				<string>#9b59b6</string>
+				<key>alpha</key>
+				<false/>
+			</dict>
+			<key>label</key>
+			<string>Tint Color</string>
+			<key>key</key>
+			<string>dndTintColor</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>enableDNDGlow</string>
+			<key>label</key>
+			<string>Add Glow</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>SparkColourPickerCell</string>
+			<key>libsparkcolourpicker</key>
+			<dict>
+				<key>defaults</key>
+				<string>com.johnzaro.perfectlockscreen13prefs.colors</string>
+				<key>key</key>
+				<string>dndGlowColor</string>
+				<key>fallback</key>
+				<string>#9b59b6</string>
+				<key>alpha</key>
+				<false/>
+			</dict>
+			<key>label</key>
+			<string>Glow Color</string>
+			<key>key</key>
+			<string>dndGlowColor</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>SILENT INDICATOR</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>showSilentIndicator</string>
+			<key>label</key>
+			<string>Show Silent Indicator</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>enableSilentTintColor</string>
+			<key>label</key>
+			<string>Add Tint</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>SparkColourPickerCell</string>
+			<key>libsparkcolourpicker</key>
+			<dict>
+				<key>defaults</key>
+				<string>com.johnzaro.perfectlockscreen13prefs.colors</string>
+				<key>key</key>
+				<string>silentTintColor</string>
+				<key>fallback</key>
+				<string>#ffffff</string>
+				<key>alpha</key>
+				<false/>
+			</dict>
+			<key>label</key>
+			<string>Tint Color</string>
+			<key>key</key>
+			<string>silentTintColor</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>enableSilentGlow</string>
+			<key>label</key>
+			<string>Add Glow</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>SparkColourPickerCell</string>
+			<key>libsparkcolourpicker</key>
+			<dict>
+				<key>defaults</key>
+				<string>com.johnzaro.perfectlockscreen13prefs.colors</string>
+				<key>key</key>
+				<string>silentGlowColor</string>
+				<key>fallback</key>
+				<string>#ffffff</string>
+				<key>alpha</key>
+				<false/>
+			</dict>
+			<key>label</key>
+			<string>Glow Color</string>
+			<key>key</key>
+			<string>silentGlowColor</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>INDICATOR LOCATION</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>keyboard</key>
+			<string>numbers</string>
+			<key>default</key>
+			<string>285</string>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>statusIndicatorLocationX</string>
+			<key>label</key>
+			<string>Location X</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>keyboard</key>
+			<string>numbers</string>
+			<key>default</key>
+			<string>30</string>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>statusIndicatorLocationY</string>
+			<key>label</key>
+			<string>Location Y</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>INDICATOR SIZE</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<integer>40</integer>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectlockscreen13prefs</string>
+			<key>key</key>
+			<string>statusIndicatorSize</string>
+			<key>isSegmented</key>
+			<true/>
+			<key>segmentCount</key>
+			<integer>80</integer>
+			<key>min</key>
+			<integer>20</integer>
+			<key>max</key>
+			<integer>100</integer>
+			<key>showValue</key>
+			<true/>
 		</dict>
 		<dict>
         	<key>cell</key>

@@ -9,7 +9,7 @@ PerfectLockScreen13Prefs_INSTALL_PATH = /Library/PreferenceBundles
 PerfectLockScreen13Prefs_FRAMEWORKS = UIKit
 PerfectLockScreen13Prefs_PRIVATE_FRAMEWORKS = Preferences
 PerfectLockScreen13Prefs_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
-PerfectLockScreen13Prefs_LIBRARIES += sparkapplist sparkcolourpicker
+PerfectLockScreen13Prefs_LIBRARIES += sparkcolourpicker
 PerfectLockScreen13Prefs_EXTRA_FRAMEWORKS = Cephei CepheiPrefs
 
 include $(THEOS_MAKE_PATH)/bundle.mk
