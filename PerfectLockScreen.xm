@@ -1,8 +1,8 @@
-#import "PerfectLockScreen13.h"
+#import "PerfectLockScreen.h"
 #import <Cephei/HBPreferences.h>
 #import "SparkColourPickerUtils.h"
 
-#define kBundlePath @"/var/mobile/Library/com.johnzaro.perfectlockscreen13.bundle"
+#define kBundlePath @"/var/mobile/Library/com.johnzaro.perfectlockscreen.bundle"
 #define IS_iPAD ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
 static SBFLockScreenDateView *lockScreenDateView;

@@ -7,13 +7,13 @@ GO_EASY_ON_ME = 1
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = PerfectLockScreen13
-PerfectLockScreen13_FILES = PerfectLockScreen13.xm
-PerfectLockScreen13_CFLAGS = -fobjc-arc -Wno-logical-op-parentheses
-PerfectLockScreen13_LIBRARIES += sparkcolourpicker
-PerfectLockScreen13_EXTRA_FRAMEWORKS += Cephei
+TWEAK_NAME = PerfectLockScreen
+PerfectLockScreen_FILES = PerfectLockScreen.xm
+PerfectLockScreen_CFLAGS = -fobjc-arc -Wno-logical-op-parentheses
+PerfectLockScreen_LIBRARIES += sparkcolourpicker
+PerfectLockScreen_EXTRA_FRAMEWORKS += Cephei
 
-BUNDLE_NAME = com.johnzaro.perfectlockscreen13
+BUNDLE_NAME = com.johnzaro.perfectlockscreen
 com.johnzaro.perfectlockscreen13_INSTALL_PATH = /var/mobile/Library
 
 include $(THEOS)/makefiles/bundle.mk
