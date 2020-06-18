@@ -19,6 +19,8 @@ static BOOL autoRetryFaceID;
 static BOOL roundedCorners;
 static BOOL enableAutoRotate;
 static BOOL hideBatteryChargingAnimation;
+static BOOL enableCustomCarrier;
+static NSString *customCarrier;
 static BOOL hideLockIcon;
 static BOOL hideTodayView;
 static BOOL hideDate;
@@ -199,6 +201,21 @@ CGFloat quickButtonsSize;
 	- (void)_transitionChargingViewToVisible: (BOOL)arg1 showBattery: (BOOL)arg2 animated: (BOOL)arg3
 	{
 		%orig(NO, arg2, arg3);
+	}
+
+	%end
+
+%end
+
+// ------------------------------ CUSTOM CARRIER TEXT ------------------------------
+
+%group customCarrierGroup
+
+	%hook _UIStatusBarDataCellularEntry
+
+	- (void)setString: (NSString*)arg
+	{
+		%orig(customCarrier);
 	}
 
 	%end
@@ -498,7 +515,6 @@ CGFloat quickButtonsSize;
 
 %ctor
 {
-	%init;
 	pref = [[HBPreferences alloc] initWithIdentifier: @"com.johnzaro.perfectlockscreen13prefs"];
 	[pref registerDefaults:
 	@{
@@ -512,6 +528,8 @@ CGFloat quickButtonsSize;
 		@"quickActionsTransparentBackground": @NO,
 		@"enableAutoRotate": @NO,
 		@"hideBatteryChargingAnimation": @NO,
+		@"enableCustomCarrier": @NO,
+		@"customCarrier": @"",
 		@"hideLockIcon": @NO,
 		@"hideTodayView": @NO,
 		@"hideDate": @NO,
@@ -547,6 +565,8 @@ CGFloat quickButtonsSize;
 		quickActionsTransparentBackground = [pref boolForKey: @"quickActionsTransparentBackground"];
 		enableAutoRotate = [pref boolForKey: @"enableAutoRotate"];
 		hideBatteryChargingAnimation = [pref boolForKey: @"hideBatteryChargingAnimation"];
+		enableCustomCarrier = [pref boolForKey: @"enableCustomCarrier"];
+		customCarrier = [pref objectForKey: @"customCarrier"];
 		hideLockIcon = [pref boolForKey: @"hideLockIcon"];
 		hideTodayView = [pref boolForKey: @"hideTodayView"];
 		hideDate = [pref boolForKey: @"hideDate"];
@@ -573,6 +593,8 @@ CGFloat quickButtonsSize;
 			%init(roundedCornersGroup);
 		if(hideBatteryChargingAnimation)
 			%init(hideBatteryChargingAnimationGroup);
+		if(enableCustomCarrier)
+			%init(customCarrierGroup);
 		if(hideLockIcon)
 			%init(hideLockIconGroup);
 		if(hideTodayView)
