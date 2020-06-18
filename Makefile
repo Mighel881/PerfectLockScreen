@@ -13,10 +13,6 @@ PerfectLockScreen_CFLAGS = -fobjc-arc -Wno-logical-op-parentheses
 PerfectLockScreen_LIBRARIES += sparkcolourpicker
 PerfectLockScreen_EXTRA_FRAMEWORKS += Cephei
 
-BUNDLE_NAME = com.johnzaro.perfectlockscreen
-com.johnzaro.perfectlockscreen13_INSTALL_PATH = /var/mobile/Library
-
-include $(THEOS)/makefiles/bundle.mk
 include $(THEOS_MAKE_PATH)/tweak.mk
 
 SUBPROJECTS += Preferences
